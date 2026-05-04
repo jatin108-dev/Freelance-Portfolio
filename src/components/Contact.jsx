@@ -7,29 +7,45 @@ export default function Contact() {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      await fetch("https://freelance-portfolio-backend-y07t.onrender.com/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+    setLoading(true);
 
-      alert("Message sent 🚀");
+    try {
+      const res = await fetch(
+        "https://freelance-portfolio-backend-y07t.onrender.com/api/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed");
+      }
+
+      alert("Message sent successfully 🚀");
 
       setForm({
         name: "",
         email: "",
         message: "",
       });
+
     } catch (err) {
-      console.log(err);
-      alert("Something went wrong");
+      console.error("Error:", err);
+      alert("Failed to send message ❌");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -37,8 +53,7 @@ export default function Contact() {
       
       <div className="w-full max-w-xl bg-gray-900/60 backdrop-blur-xl border border-gray-800 rounded-2xl p-8 shadow-2xl">
         
-        {/* Heading */}
-        <h2 className="text-3xl font-semibold text-center mb-2 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-semibold text-center mb-2 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
           Let’s Work Together
         </h2>
 
@@ -46,44 +61,40 @@ export default function Contact() {
           Got an idea? Let’s turn it into something amazing.
         </p>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-          {/* Name */}
           <input
             type="text"
             placeholder="Your Name"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="p-3 rounded-lg bg-black/60 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 outline-none transition"
+            className="p-3 rounded-lg bg-black/60 border border-gray-700 focus:border-green-400 outline-none"
             required
           />
 
-          {/* Email */}
           <input
             type="email"
             placeholder="Your Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="p-3 rounded-lg bg-black/60 border border-gray-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 outline-none transition"
+            className="p-3 rounded-lg bg-black/60 border border-gray-700 focus:border-green-400 outline-none"
             required
           />
 
-          {/* Message */}
           <textarea
             placeholder="Your Message"
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
-            className="p-3 rounded-lg bg-black/60 border border-gray-700 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 outline-none transition h-32 resize-none"
+            className="p-3 rounded-lg bg-black/60 border border-gray-700 focus:border-green-400 outline-none h-32 resize-none"
             required
           />
 
-          {/* Button */}
           <button
             type="submit"
-            className="mt-2 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-purple-500/30"
+            disabled={loading}
+            className="mt-2 py-3 rounded-lg bg-green-400 text-black font-medium hover:scale-[1.03] transition disabled:opacity-50"
           >
-            Send Message 🚀
+            {loading ? "Sending..." : "Send Message 🚀"}
           </button>
         </form>
       </div>
