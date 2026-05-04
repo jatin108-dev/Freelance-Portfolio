@@ -9,7 +9,7 @@ export default function Reviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/reviews");
+        const res = await fetch("https://freelance-portfolio-backend-y07t.onrender.com/api/reviews");
         const data = await res.json();
         setReviews(Array.isArray(data) ? data : []);
       } catch (err) {

@@ -11,7 +11,7 @@ export default function Contact() {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:5000/api/contact", {
+      await fetch("https://freelance-portfolio-backend-y07t.onrender.com/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

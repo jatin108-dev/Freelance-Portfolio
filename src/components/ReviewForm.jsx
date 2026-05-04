@@ -14,7 +14,7 @@ export default function ReviewForm({ onNewReview }) {
     const avatar = `https://ui-avatars.com/api/?name=${form.name}`;
 
     try {
-      const res = await fetch("http://localhost:5000/api/reviews", {
+      const res = await fetch("https://freelance-portfolio-backend-y07t.onrender.com/api/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
