@@ -36,7 +36,7 @@ export default function Contact() {
           email: form.email,
           message: form.message,
         },
-        "HKsKigO2iienXPur0tu"
+        "HKsKigO2iienXPur0"
       );
 
       alert("Message sent successfully 🚀");
