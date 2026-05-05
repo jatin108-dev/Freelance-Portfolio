@@ -1,4 +1,5 @@
 import { useState } from "react";
+import emailjs from "emailjs-com";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -11,11 +12,11 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
-      const res = await fetch(
+      // ✅ 1. Save to backend (MongoDB)
+      await fetch(
         "https://freelance-portfolio-backend-y07t.onrender.com/api/contact",
         {
           method: "POST",
@@ -26,11 +27,17 @@ export default function Contact() {
         }
       );
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Failed");
-      }
+      // ✅ 2. Send email via EmailJS
+      await emailjs.send(
+        "service_3burwlt",
+        "template_uozo6xg",
+        {
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        },
+        "HKsKigO2iienXPur0tu"
+      );
 
       alert("Message sent successfully 🚀");
 
